@@ -154,6 +154,14 @@
 	desc = "Fix bayonet and charge the last terrified rapscallion. He Bleeds out waiting on the police to arrive since triangular bayonet wounds are impossible to stitch up. Just as the founding fathers intended."
 	force =	25
 
+/obj/item/clothing/shoes/jackboots/soldier
+	name = "Militia boots"
+	desc = "More resiliant, aint that nice?"
+	body_parts_covered =  FEET|LEGS
+	resistance_flags = FIRE_PROOF
+	armor = list("melee" = 60, "bullet" = 50, "laser" = 30, "energy" = 40, "bomb" = 25, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+
+
 /datum/outfit/soldier
 	name = "Foot soldier"
 	ears = /obj/item/radio/headset
@@ -165,7 +173,7 @@
 	l_pocket = /obj/item/pinpointer/beewar
 	suit_store = /obj/item/gun/ballistic/rifle/boltaction/musket
 	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1)
-	shoes = /obj/item/clothing/shoes/jackboots
+	shoes = /obj/item/clothing/shoes/jackboots/soldier
 	gloves = /obj/item/clothing/gloves/color/white
 
 /datum/outfit/soldier/post_equip(mob/living/carbon/human/H, visualsOnly)
