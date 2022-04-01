@@ -105,8 +105,9 @@
 
 /obj/machinery/manned_turret/cannon/Initialize(mapload)
 	. = ..()
-	var/matrix/M = src.transform
+	var/matrix/M = matrix()
 	M.Scale(1.5,1.5)
+	transform = M
 
 /obj/item/kitchen/knife/combat/bayonet
 	name = "Bayonet"
