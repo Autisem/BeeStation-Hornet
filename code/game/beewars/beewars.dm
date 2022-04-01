@@ -161,7 +161,6 @@
 	R.set_frequency(FREQ_CTF_RED)
 	R.freqlock = TRUE
 	R.independent = TRUE
-	H.dna.species.stunmod = 0
 
 
 /datum/outfit/soldier/bluesoldier
@@ -177,7 +176,6 @@
 	R.set_frequency(FREQ_CTF_BLUE)
 	R.freqlock = TRUE
 	R.independent = TRUE
-	H.dna.species.stunmod = 0
 
 
 /obj/item/clothing/suit/jacket/letterman_nanotrasen/soldier
