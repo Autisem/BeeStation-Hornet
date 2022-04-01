@@ -41,7 +41,6 @@
 
 /obj/machinery/capture_the_flag/blue/beewar/ctf_dust_old(mob/living/body)
 	if(isliving(body) && (team in body.faction))
-		var/turf/T = get_turf(body)
 		recently_dead_ckeys += body.ckey
 		addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
 
