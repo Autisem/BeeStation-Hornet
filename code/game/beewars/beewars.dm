@@ -49,6 +49,12 @@
 		recently_dead_ckeys += body.ckey
 		addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
 
+/turf/closed/indestructible/woodwall
+	name = "Fine wooden wall"
+	desc = "The change those pesky enemy's comming trough here is NONE"
+	icon = 'icons/turf/walls/wood_wall.dmi'
+	icon_state = "wood"
+
 /obj/item/gun/ballistic/rifle/boltaction/musket
 	name = "\improper kentucky  rifle"
 	desc = "I own a musket for home defense, since that's what the founding fathers intended. Four ruffians break into my house. What the devil? As I grab my powdered wig and Kentucky rifle. Blow a golf ball sized hole through the first man, he's dead on the spot."
@@ -99,8 +105,8 @@
 	icon_state = "cannon"
 	rate_of_fire = 1
 	number_of_shots = 1
-	cooldown_duration = 30
-	view_range = 12
+	cooldown_duration = 60
+	view_range = 9
 
 /obj/machinery/manned_turret/cannon/Initialize(mapload)
 	. = ..()

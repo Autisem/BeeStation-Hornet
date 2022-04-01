@@ -11,7 +11,7 @@
 "w" = (/turf/closed/indestructible/rock,/area/ctf/battlefield)
 "x" = (/obj/machinery/capture_the_flag/blue/beewar,/turf/open/floor/wood/wargrass,/area/ctf/battlefield)
 "z" = (/obj/structure/barricade/sandbags,/turf/open/floor/plating/asteroid/wargrass,/area/ctf/battlefield)
-"A" = (/turf/closed/wall/mineral/wood/nonmetal,/area/ctf/battlefield)
+"A" = (/turf/closed/indestructible/woodwall,/area/ctf/battlefield)
 "D" = (/obj/machinery/capture_the_flag/red/beewar,/turf/open/floor/wood/wargrass,/area/ctf/battlefield)
 "E" = (/obj/item/toy/plush/ian,/obj/structure/bed/dogbed,/turf/open/indestructible/hotelwood,/area/space)
 "F" = (/mob/living/simple_animal/hostile/bear/russian,/turf/open/floor/plating/asteroid/wargrass,/area/ctf/battlefield)
