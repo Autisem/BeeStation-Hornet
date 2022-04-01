@@ -38,7 +38,5 @@
 /datum/biome/trees
 	turf_type = /turf/open/floor/plating/asteroid/wargrass
 	flora_types = list(/obj/structure/flora/grass/jungle,/obj/structure/flora/grass/jungle/b, /obj/structure/flora/tree/pine)
-	fauna_types = list(/mob/living/simple_animal/hostile/tree)
 	flora_density = 40
-	fauna_density = 1
 
