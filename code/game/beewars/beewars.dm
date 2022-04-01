@@ -74,6 +74,7 @@
 			recently_dead_ckeys += body.ckey
 			addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
 			body.ghostize(FALSE,FALSE)
+			spawned_mobs -= body
 
 /obj/machinery/capture_the_flag/red/beewar/ctf_dust_old(mob/living/body)
 	if(isliving(body) && (team in body.faction))
@@ -81,6 +82,7 @@
 			recently_dead_ckeys += body.ckey
 			addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
 			body.ghostize(FALSE,FALSE)
+			spawned_mobs -= body
 
 /turf/closed/indestructible/woodwall
 	name = "Fine wooden wall"
