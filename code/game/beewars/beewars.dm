@@ -39,17 +39,46 @@
 	control_points = 1
 	control_points_to_win = 500
 
+/obj/machinery/capture_the_flag/blue/beewar/process(delta_time)
+	for(var/mob/living/M as() in spawned_mobs)
+		if(QDELETED(M))
+			spawned_mobs -= M
+			continue
+		// Anyone in crit, automatically reap
+		if(M.stat == DEAD  && M.ckey)
+			ctf_dust_old(M)
+		else
+			// The changes that you've been hit with no shield but not
+			// instantly critted are low, but have some healing.
+			M.adjustBruteLoss(-2.5 * delta_time)
+			M.adjustFireLoss(-2.5 * delta_time)
+
+
+/obj/machinery/capture_the_flag/red/beewar/process(delta_time)
+	for(var/mob/living/M as() in spawned_mobs)
+		if(QDELETED(M))
+			spawned_mobs -= M
+			continue
+		// Anyone in crit, automatically reap
+		if(M.stat == DEAD  && M.ckey)
+			ctf_dust_old(M)
+		else
+			// The changes that you've been hit with no shield but not
+			// instantly critted are low, but have some healing.
+			M.adjustBruteLoss(-2.5 * delta_time)
+			M.adjustFireLoss(-2.5 * delta_time)
+
 /obj/machinery/capture_the_flag/blue/beewar/ctf_dust_old(mob/living/body)
 	if(isliving(body) && (team in body.faction))
 		recently_dead_ckeys += body.ckey
 		addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
-		body.gib(TRUE)
+		body.ghostize(FALSE,FALSE)
 
 /obj/machinery/capture_the_flag/red/beewar/ctf_dust_old(mob/living/body)
 	if(isliving(body) && (team in body.faction))
 		recently_dead_ckeys += body.ckey
 		addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
-		body.gib(TRUE)
+		body.ghostize(FALSE,FALSE)
 
 /turf/closed/indestructible/woodwall
 	name = "Fine wooden wall"
