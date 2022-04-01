@@ -1,11 +1,11 @@
 #define WHITE_TEAM "White"
-#define RED_TEAM "Red"
-#define BLUE_TEAM "Blue"
+#define RED_TEAM "red"
+#define BLUE_TEAM "blue"
 #define FLAG_RETURN_TIME 200 // 20 seconds
 #define INSTAGIB_RESPAWN 50 //5 seconds
 #define DEFAULT_RESPAWN 150 //15 seconds
 #define AMMO_DROP_LIFETIME 300
-#define CTF_REQUIRED_PLAYERS 4
+#define CTF_REQUIRED_PLAYERS 999//prevent players from starting early
 
 
 
@@ -280,7 +280,8 @@
 /obj/machinery/capture_the_flag/proc/spawn_team_member(client/new_team_member)
 	var/mob/living/carbon/human/M = new/mob/living/carbon/human(get_turf(src))
 	new_team_member.prefs.copy_to(M)
-	M.set_species(/datum/species/human)
+	if (isplasmaman(M))
+		M.set_species(/datum/species/human)
 	M.key = new_team_member.key
 	M.faction += team
 	M.equipOutfit(ctf_gear)

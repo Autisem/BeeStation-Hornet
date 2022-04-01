@@ -735,6 +735,8 @@
 #include "code\game\area\areas\ruins\lavaland.dm"
 #include "code\game\area\areas\ruins\space.dm"
 #include "code\game\area\areas\ruins\templates.dm"
+#include "code\game\beewars\beewargen.dm"
+#include "code\game\beewars\beewars.dm"
 #include "code\game\gamemodes\events.dm"
 #include "code\game\gamemodes\game_mode.dm"
 #include "code\game\gamemodes\objective.dm"

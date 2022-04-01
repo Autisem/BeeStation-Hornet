@@ -1,0 +1,9 @@
+{
+	"map_name": "The battlefield",
+	"map_link": "None",
+	"map_path": "map_files/beewars",
+	"map_file": "beewars.dmm",
+	"shuttles": {
+		"cargo": "cargo_delta"
+	}
+}
