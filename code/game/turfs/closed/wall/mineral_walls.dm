@@ -153,7 +153,7 @@
 /turf/closed/wall/mineral/wood/nonmetal
 	desc = "A solidly wooden wall. It's a bit weaker than a wall made with metal."
 	girder_type = /obj/structure/barricade/wooden
-	baseturfs = /turf/open/floor/wood/wargrass
+	baseturfs = /turf/open/floor/plating/asteroid/wargrass
 	hardness = 50
 	canSmoothWith = list(/turf/closed/wall/mineral/wood, /obj/structure/falsewall/wood, /turf/closed/wall/mineral/wood/nonmetal)
 

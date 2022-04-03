@@ -396,13 +396,10 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	R.use_command = TRUE
 	H.mind.assigned_role = "commander"
 
-/obj/item/storage/backpack/soldier/red/beewar
+/obj/item/clothing/under/color/red/beewar
 	name = "Red war tunic"
 	resistance_flags = FIRE_PROOF
 
-/obj/item/storage/backpack/soldier/red/beewar
-	name = "Red war tunic"
-	resistance_flags = FIRE_PROOF
 
 
 /datum/outfit/war/red
