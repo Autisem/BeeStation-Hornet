@@ -343,8 +343,16 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 
 
 /obj/item/storage/belt/sabre/beewars
+	name = "Commanders sheath"
+	desc = "Bit rude to put that kniofe in me chest innit bruf?"
+
+/obj/item/melee/sabre/beewars
 	name = "Commanders saber"
 	desc = "Bit rude to put that kniofe in me chest innit bruf?"
+
+/obj/item/storage/belt/sabre/beewars/PopulateContents()
+	new /obj/item/melee/sabre/beewars(src)
+	update_icon()
 
 
 /obj/item/storage/belt/beewars/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type)
@@ -362,7 +370,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	suit = /obj/item/clothing/suit/aristo_red/commander
 	head = /obj/item/clothing/head/beret/black
 	belt = /obj/item/storage/belt/sabre/beewars
-	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1)
+	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1,/obj/item/storage/belt/bandolier/soldier=1)
 
 /datum/outfit/war/red/commander/post_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()
@@ -392,7 +400,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	uniform = /obj/item/clothing/under/color/red
 	back = /obj/item/storage/backpack/soldier/red
 	suit =  /obj/item/clothing/suit/jacket/letterman_red/soldier
-	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1,/obj/item/storage/belt/bandolier/soldier=1)
+	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1)
 
 /datum/outfit/war/red/post_equip(mob/living/carbon/human/H, visualsOnly)
 	..()
