@@ -415,9 +415,29 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 
 
 
+/obj/item/clothing/suit/aristo_red/commander
+	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
+	armor = list("melee" = 20, "bullet" = 40, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+
+/obj/item/clothing/suit/aristo_red/commander/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/team_monitor, "red", 1)
+	AddComponent(/datum/component/tracking_beacon, "red", 1, GetComponent(/datum/component/team_monitor), TRUE, "#eb270d", TRUE)
+	//TM.toggle_hud(TRUE, H)
+
+/obj/item/clothing/suit/aristo_blue/commander
+	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
+	armor = list("melee" = 20, "bullet" = 40, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+
+/obj/item/clothing/suit/aristo_blue/commander/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/team_monitor, "blue", 1)
+	AddComponent(/datum/component/tracking_beacon, "blue", 1, GetComponent(/datum/component/team_monitor), TRUE, "#1519e9", TRUE)
+
 /obj/item/clothing/suit/jacket/letterman_nanotrasen/soldier
 	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
 	resistance_flags = FIRE_PROOF
+	armor = list("melee" = 10, "bullet" = 20, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
 
 /obj/item/clothing/suit/jacket/letterman_nanotrasen/soldier/ComponentInitialize()
 	. = ..()
@@ -428,6 +448,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 /obj/item/clothing/suit/jacket/letterman_red/soldier
 	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
 	resistance_flags = FIRE_PROOF
+	armor = list("melee" = 10, "bullet" = 20, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
 
 /obj/item/clothing/suit/jacket/letterman_red/soldier/ComponentInitialize()
 	. = ..()
@@ -435,39 +456,22 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	//TM.toggle_hud(TRUE, H)
 
 
-/obj/item/clothing/suit/aristo_red/commander
-	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
-	armor = list("melee" = 40, "bullet" = 40, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
-
-/obj/item/clothing/suit/aristo_red/commander/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/team_monitor, "red", 1)
-	AddComponent(/datum/component/tracking_beacon, "red", 1, GetComponent(/datum/component/team_monitor), TRUE, "#eb270d", TRUE)
-	//TM.toggle_hud(TRUE, H)
-
-/obj/item/clothing/suit/aristo_blue/commander
-	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
-	armor = list("melee" = 40, "bullet" = 40, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
-
-/obj/item/clothing/suit/aristo_blue/commander/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/team_monitor, "blue", 1)
-	AddComponent(/datum/component/tracking_beacon, "blue", 1, GetComponent(/datum/component/team_monitor), TRUE, "#1519e9", TRUE)
 /obj/item/clothing/under/color/red/beewar
 	name = "Red war tunic"
 	resistance_flags = FIRE_PROOF
-	armor = list("melee" = 20, "bullet" = 20, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+	//armor = list("melee" = 10, "bullet" = 20, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
 /obj/item/clothing/under/color/blue/beewars
 	name = "Blue battle tunic"
 	resistance_flags = FIRE_PROOF
-	armor = list("melee" = 20, "bullet" = 20, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+	//armor = list("melee" = 10, "bullet" = 20, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
 /obj/item/clothing/head/redcoat/beewars
-	armor = list("melee" = 20, "bullet" = 20, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+	resistance_flags = FIRE_PROOF
+	armor = list("melee" = 10, "bullet" = 20, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
 /obj/item/clothing/head/beret/black/commander
 	name = "Commanders berret"
 	desc = "For the most dinstinquished gentleman on the battle field, show them hell!"
 	resistance_flags = FIRE_PROOF
-	armor = list("melee" = 40, "bullet" = 40, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+	armor = list("melee" = 20, "bullet" = 40, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
 /obj/item/storage/backpack/soldier
 	name = "emergency response team security backpack"
 	desc = "A spacious backpack with lots of pockets, worn by Security Officers of an Emergency Response Team."
