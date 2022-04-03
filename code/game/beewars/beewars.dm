@@ -345,6 +345,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 /obj/item/storage/belt/sabre/beewars
 	name = "Commanders sheath"
 	desc = "Bit rude to put that kniofe in me chest innit bruf?"
+	resistance_flags = FIRE_PROOF
 
 /obj/item/melee/sabre/beewars
 	name = "Commanders saber"
@@ -395,10 +396,19 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	R.use_command = TRUE
 	H.mind.assigned_role = "commander"
 
+/obj/item/storage/backpack/soldier/red/beewar
+	name = "Red war tunic"
+	resistance_flags = FIRE_PROOF
+
+/obj/item/storage/backpack/soldier/red/beewar
+	name = "Red war tunic"
+	resistance_flags = FIRE_PROOF
+
+
 /datum/outfit/war/red
 	name = "Red foot soldier"
-	uniform = /obj/item/clothing/under/color/red
-	back = /obj/item/storage/backpack/soldier/red
+	uniform = /obj/item/clothing/under/color/red/beewar
+	back = /obj/item/storage/backpack/soldier/red/beewar
 	suit =  /obj/item/clothing/suit/jacket/letterman_red/soldier
 	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1)
 
@@ -410,10 +420,13 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	R.independent = TRUE
 
 
+/obj/item/clothing/under/color/blue/beewars
+	name = "Blue battle tunic"
+	resistance_flags = FIRE_PROOF
 
 /datum/outfit/war/blue
 	name = "Blue foot soldier"
-	uniform = /obj/item/clothing/under/color/blue
+	uniform = /obj/item/clothing/under/color/blue/beewars
 	back = /obj/item/storage/backpack/soldier/blue
 	suit = /obj/item/clothing/suit/jacket/letterman_nanotrasen/soldier
 
@@ -429,6 +442,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 
 /obj/item/clothing/suit/jacket/letterman_nanotrasen/soldier
 	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
+	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/suit/jacket/letterman_nanotrasen/soldier/ComponentInitialize()
 	. = ..()
@@ -438,6 +452,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 
 /obj/item/clothing/suit/jacket/letterman_red/soldier
 	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
+	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/suit/jacket/letterman_red/soldier/ComponentInitialize()
 	. = ..()
@@ -448,6 +463,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	name = "emergency response team security backpack"
 	desc = "A spacious backpack with lots of pockets, worn by Security Officers of an Emergency Response Team."
 	icon_state = "ert_security"
+	resistance_flags = FIRE_PROOF
 
 /obj/item/storage/backpack/soldier/blue
 	name = "Blue soldier backpack"
