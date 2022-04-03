@@ -361,7 +361,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	back = /obj/item/storage/backpack/bannerpack/red
 	suit = /obj/item/clothing/suit/aristo_red/commander
 	head = /obj/item/clothing/head/beret/black
-	belt = /obj/item/storage/belt/beewars
+	belt = /obj/item/storage/belt/sabre/beewars
 	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1)
 
 /datum/outfit/war/red/commander/post_equip(mob/living/carbon/human/H, visualsOnly)
