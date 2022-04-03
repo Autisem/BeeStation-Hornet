@@ -108,8 +108,8 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 		else
 			// The changes that you've been hit with no shield but not
 			// instantly critted are low, but have some healing.
-			M.adjustBruteLoss(-2.5 * delta_time)
-			M.adjustFireLoss(-2.5 * delta_time)
+			M.adjustBruteLoss(-1 * delta_time)
+			M.adjustFireLoss(-1 * delta_time)
 
 
 /obj/machinery/capture_the_flag/red/beewar/process(delta_time)
@@ -132,13 +132,15 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 			recently_dead_ckeys += body.ckey
 			addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
 			body.ghostize(FALSE,FALSE)
-			if (body.key == BT.commander)
-				var/obj/item/clothing/suit/S = body.get_item_by_slot(ITEM_SLOT_OCLOTHING)
-				//BACON check here
-				var/datum/component/tracking_beacon/TB = S.GetComponent(/datum/component/tracking_beacon)
-				TB.toggle_visibility(FALSE)
-				TB.always_update = TRUE
 			spawned_mobs -= body
+		var/obj/item/clothing/suit/S = body.get_item_by_slot(ITEM_SLOT_OCLOTHING)
+		var/datum/component/tracking_beacon/TB = S.GetComponent(/datum/component/tracking_beacon)
+		var/datum/component/team_monitor/TM = S.GetComponent(/datum/component/team_monitor)
+		if(TB)
+			qdel(TB)
+		if(TM)
+			qdel(TM)
+
 
 /obj/machinery/capture_the_flag/red/beewar/ctf_dust_old(mob/living/body)
 	if(isliving(body) && (team in body.faction))
@@ -146,13 +148,15 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 			recently_dead_ckeys += body.ckey
 			addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
 			body.ghostize(FALSE,FALSE)
-			if (body.key == RT.commander)
-				var/obj/item/clothing/suit/S = body.get_item_by_slot(ITEM_SLOT_OCLOTHING)
-				//BACON check here
-				var/datum/component/tracking_beacon/TB = S.GetComponent(/datum/component/tracking_beacon)
-				TB.toggle_visibility(FALSE)
-				TB.always_update = TRUE
 			spawned_mobs -= body
+		var/obj/item/clothing/suit/S = body.get_item_by_slot(ITEM_SLOT_OCLOTHING)
+		var/datum/component/tracking_beacon/TB = S.GetComponent(/datum/component/tracking_beacon)
+		var/datum/component/team_monitor/TM = S.GetComponent(/datum/component/team_monitor)
+		if(TB)
+			qdel(TB)
+		if(TM)
+			qdel(TM)
+
 
 /turf/closed/indestructible/woodwall
 	name = "Fine wooden wall"
@@ -291,8 +295,19 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 /obj/item/clothing/suit/aristo_red/commander
 	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
 
+/obj/item/clothing/suit/aristo_red/commander/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/team_monitor, "red", 1)
+	AddComponent(/datum/component/tracking_beacon, "red", 1, GetComponent(/datum/component/team_monitor), TRUE, "#eb270d", TRUE)
+	//TM.toggle_hud(TRUE, H)
+
 /obj/item/clothing/suit/aristo_blue/commander
 	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
+
+/obj/item/clothing/suit/aristo_blue/commander/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/team_monitor, "blue", 1)
+	AddComponent(/datum/component/tracking_beacon, "blue", 1, GetComponent(/datum/component/team_monitor), TRUE, "#1519e9", TRUE)
 
 /datum/outfit/war
 	name = "Foot soldier"
@@ -307,7 +322,6 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1)
 	shoes = /obj/item/clothing/shoes/jackboots/soldier
 	gloves = /obj/item/clothing/gloves/color/white
-	var/datum/component/tracking_beacon/TB //BACON check here, so I dont have to getcomp twice
 
 
 
@@ -328,13 +342,27 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 		ADD_TRAIT(I, TRAIT_NODROP, CAPTURE_THE_FLAG_TRAIT)
 
 
+/obj/item/storage/belt/beewars
+	name = "Commanders saber"
+	desc = "Bit rude to put that kniofe in me chest innit bruf?"
 
+
+/obj/item/storage/belt/beewars/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type)
+	. = ..()
+	if(isprojectile(hitby))
+		var/obj/item/projectile/P = hitby
+			if(!istype(hitby,/obj/item/projectile/magic/aoe/fireball/cannon))
+				P.firer = src
+				P.setAngle(get_dir(owner, hitby))
+				return 1
 
 /datum/outfit/war/red/commander
 	name = "Red Commander"
 	back = /obj/item/storage/backpack/bannerpack/red
 	suit = /obj/item/clothing/suit/aristo_red/commander
 	head = /obj/item/clothing/head/beret/black
+	belt = /obj/item/storage/belt/beewars
+	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1)
 
 /datum/outfit/war/red/commander/post_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()
@@ -343,15 +371,14 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	R.use_command = TRUE
 	H.mind.assigned_role = "commander"
 	H.real_name = "Commander [H.real_name]"
-	//BACON check here
-	TB.toggle_visibility(TRUE)
-	TB.always_update = TRUE
 
 /datum/outfit/war/blue/commander
 	name = "Blue Commander"
 	back = /obj/item/storage/backpack/bannerpack/blue
 	suit = /obj/item/clothing/suit/aristo_blue/commander
 	head = /obj/item/clothing/head/beret/black
+	belt = /obj/item/storage/belt/sabre/beewars
+	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1,/obj/item/storage/belt/bandolier/soldier=1)
 
 /datum/outfit/war/blue/commander/post_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()
@@ -359,17 +386,13 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	R.command = TRUE
 	R.use_command = TRUE
 	H.mind.assigned_role = "commander"
-	H.real_name = "Commander [H.real_name]"
-	//BACON check here
-	TB.toggle_visibility(TRUE)
-	TB.always_update = TRUE
-
 
 /datum/outfit/war/red
 	name = "Red foot soldier"
 	uniform = /obj/item/clothing/under/color/red
 	back = /obj/item/storage/backpack/soldier/red
 	suit =  /obj/item/clothing/suit/jacket/letterman_red/soldier
+	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1,/obj/item/storage/belt/bandolier/soldier=1)
 
 /datum/outfit/war/red/post_equip(mob/living/carbon/human/H, visualsOnly)
 	..()
@@ -377,14 +400,6 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	R.set_frequency(FREQ_CTF_RED)
 	R.freqlock = TRUE
 	R.independent = TRUE
-	var/obj/item/clothing/suit/target = H.get_item_by_slot(ITEM_SLOT_OCLOTHING)
-	//BACON check here
-	var/datum/component/team_monitor/TM = target.AddComponent(/datum/component/team_monitor, "red", null)
-	TB = target.AddComponent(/datum/component/tracking_beacon, "red", null, null, TRUE, "#eb270d", TRUE, TRUE)
-	TB.toggle_visibility(FALSE)
-	TB.attached_monitor = TM
-	TM.toggle_hud(TRUE, H)
-	TM.set_frequency(1)
 
 
 
@@ -401,23 +416,25 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	R.set_frequency(FREQ_CTF_BLUE)
 	R.freqlock = TRUE
 	R.independent = TRUE
-	var/obj/item/clothing/suit/target = H.get_item_by_slot(ITEM_SLOT_OCLOTHING)
-	//BACON check here
-	var/datum/component/team_monitor/TM = target.AddComponent(/datum/component/team_monitor, "blue", null)
-	TB = target.AddComponent(/datum/component/tracking_beacon, "blue", null, null, TRUE, "#1519e9", TRUE, TRUE)
-	TB.toggle_visibility(FALSE)
-	TB.attached_monitor = TM
-	TM.toggle_hud(TRUE, H)
-	TM.set_frequency(1)
 
 
 
 /obj/item/clothing/suit/jacket/letterman_nanotrasen/soldier
 	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
 
+/obj/item/clothing/suit/jacket/letterman_nanotrasen/soldier/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/team_monitor, "blue", 1)
+	//TM.toggle_hud(TRUE, H)
+
 
 /obj/item/clothing/suit/jacket/letterman_red/soldier
 	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
+
+/obj/item/clothing/suit/jacket/letterman_red/soldier/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/team_monitor, "red", 1)
+	//TM.toggle_hud(TRUE, H)
 
 /obj/item/storage/backpack/soldier
 	name = "emergency response team security backpack"
