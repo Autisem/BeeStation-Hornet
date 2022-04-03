@@ -292,29 +292,13 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	resistance_flags = FIRE_PROOF
 	armor = list("melee" = 60, "bullet" = 50, "laser" = 30, "energy" = 40, "bomb" = 25, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
 
-/obj/item/clothing/suit/aristo_red/commander
-	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
-
-/obj/item/clothing/suit/aristo_red/commander/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/team_monitor, "red", 1)
-	AddComponent(/datum/component/tracking_beacon, "red", 1, GetComponent(/datum/component/team_monitor), TRUE, "#eb270d", TRUE)
-	//TM.toggle_hud(TRUE, H)
-
-/obj/item/clothing/suit/aristo_blue/commander
-	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
-
-/obj/item/clothing/suit/aristo_blue/commander/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/team_monitor, "blue", 1)
-	AddComponent(/datum/component/tracking_beacon, "blue", 1, GetComponent(/datum/component/team_monitor), TRUE, "#1519e9", TRUE)
 
 /datum/outfit/war
 	name = "Foot soldier"
 	ears = /obj/item/radio/headset
 	back = /obj/item/storage/backpack/soldier
 	suit = /obj/item/clothing/suit/jacket/letterman_red/soldier
-	head = /obj/item/clothing/head/redcoat
+	head = /obj/item/clothing/head/redcoat/beewars
 	belt = /obj/item/storage/belt/bandolier/soldier
 	r_pocket = /obj/item/kitchen/knife/combat/bayonet
 	l_pocket = /obj/item/pinpointer/beewar
@@ -369,7 +353,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	name = "Red Commander"
 	back = /obj/item/storage/backpack/bannerpack/red
 	suit = /obj/item/clothing/suit/aristo_red/commander
-	head = /obj/item/clothing/head/beret/black
+	head = /obj/item/clothing/head/beret/black/commander
 	belt = /obj/item/storage/belt/sabre/beewars
 	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1,/obj/item/storage/belt/bandolier/soldier=1)
 
@@ -385,7 +369,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	name = "Blue Commander"
 	back = /obj/item/storage/backpack/bannerpack/blue
 	suit = /obj/item/clothing/suit/aristo_blue/commander
-	head = /obj/item/clothing/head/beret/black
+	head = /obj/item/clothing/head/beret/black/commander
 	belt = /obj/item/storage/belt/sabre/beewars
 	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1,/obj/item/storage/belt/bandolier/soldier=1)
 
@@ -396,16 +380,13 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	R.use_command = TRUE
 	H.mind.assigned_role = "commander"
 
-/obj/item/clothing/under/color/red/beewar
-	name = "Red war tunic"
-	resistance_flags = FIRE_PROOF
 
 
 
 /datum/outfit/war/red
 	name = "Red foot soldier"
 	uniform = /obj/item/clothing/under/color/red/beewar
-	back = /obj/item/storage/backpack/soldier/red/beewar
+	back = /obj/item/storage/backpack/soldier/red
 	suit =  /obj/item/clothing/suit/jacket/letterman_red/soldier
 	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1)
 
@@ -417,9 +398,6 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	R.independent = TRUE
 
 
-/obj/item/clothing/under/color/blue/beewars
-	name = "Blue battle tunic"
-	resistance_flags = FIRE_PROOF
 
 /datum/outfit/war/blue
 	name = "Blue foot soldier"
@@ -456,6 +434,40 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	AddComponent(/datum/component/team_monitor, "red", 1)
 	//TM.toggle_hud(TRUE, H)
 
+
+/obj/item/clothing/suit/aristo_red/commander
+	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
+	armor = list("melee" = 40, "bullet" = 40, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+
+/obj/item/clothing/suit/aristo_red/commander/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/team_monitor, "red", 1)
+	AddComponent(/datum/component/tracking_beacon, "red", 1, GetComponent(/datum/component/team_monitor), TRUE, "#eb270d", TRUE)
+	//TM.toggle_hud(TRUE, H)
+
+/obj/item/clothing/suit/aristo_blue/commander
+	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
+	armor = list("melee" = 40, "bullet" = 40, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+
+/obj/item/clothing/suit/aristo_blue/commander/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/team_monitor, "blue", 1)
+	AddComponent(/datum/component/tracking_beacon, "blue", 1, GetComponent(/datum/component/team_monitor), TRUE, "#1519e9", TRUE)
+/obj/item/clothing/under/color/red/beewar
+	name = "Red war tunic"
+	resistance_flags = FIRE_PROOF
+	armor = list("melee" = 20, "bullet" = 20, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+/obj/item/clothing/under/color/blue/beewars
+	name = "Blue battle tunic"
+	resistance_flags = FIRE_PROOF
+	armor = list("melee" = 20, "bullet" = 20, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+/obj/item/clothing/head/redcoat/beewars
+	armor = list("melee" = 20, "bullet" = 20, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+/obj/item/clothing/head/beret/black/commander
+	name = "Commanders berret"
+	desc = "For the most dinstinquished gentleman on the battle field, show them hell!"
+	resistance_flags = FIRE_PROOF
+	armor = list("melee" = 40, "bullet" = 40, "laser" = 30, "energy" = 40, "bomb" = 75, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
 /obj/item/storage/backpack/soldier
 	name = "emergency response team security backpack"
 	desc = "A spacious backpack with lots of pockets, worn by Security Officers of an Emergency Response Team."
