@@ -342,19 +342,19 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 		ADD_TRAIT(I, TRAIT_NODROP, CAPTURE_THE_FLAG_TRAIT)
 
 
-/obj/item/storage/belt/beewars
+/obj/item/storage/belt/sabre/beewars
 	name = "Commanders saber"
 	desc = "Bit rude to put that kniofe in me chest innit bruf?"
 
 
 /obj/item/storage/belt/beewars/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type)
 	. = ..()
-	if(isprojectile(hitby))
+	if(isprojectile(hitby) && !istype(hitby,/obj/item/projectile/magic/aoe/fireball/cannon))
 		var/obj/item/projectile/P = hitby
-			if(!istype(hitby,/obj/item/projectile/magic/aoe/fireball/cannon))
-				P.firer = src
-				P.setAngle(get_dir(owner, hitby))
-				return 1
+		P.firer = src
+		P.setAngle(get_dir(owner, hitby))
+		owner.emote("Gracefully returns the bullets back to sender")
+		return 1
 
 /datum/outfit/war/red/commander
 	name = "Red Commander"
