@@ -1,3 +1,8 @@
+#define RED_TEAM "red"
+#define BLUE_TEAM "blue"
+
+var/global/obj/machinery/capture_the_flag/red/beewar/RT
+var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 /turf/open/floor/plating/asteroid/wargrass
 	name = "Grass"
 	desc = "The distinct lack of blood on youre enemy's is offsetting."
@@ -29,15 +34,68 @@
 
 /obj/machinery/capture_the_flag/red/beewar
 	name = "Red team spawner"
-	ctf_gear = /datum/outfit/soldier/redsoldier
+	ctf_gear = /datum/outfit/war/red
 	control_points = 1
 	control_points_to_win = 500
+	var/commander
+	var/datum/outfit/commander_gear = /datum/outfit/war/red/commander
 
 /obj/machinery/capture_the_flag/blue/beewar
 	name = "Blue team spawner"
-	ctf_gear = /datum/outfit/soldier/bluesoldier
+	ctf_gear = /datum/outfit/war/blue
 	control_points = 1
 	control_points_to_win = 500
+	var/commander
+	var/datum/outfit/commander_gear = /datum/outfit/war/blue/commander
+
+/obj/machinery/capture_the_flag/blue/beewar/Initialize(mapload)
+	. = ..()
+	BT = src
+
+/obj/machinery/capture_the_flag/red/beewar/Initialize(mapload)
+	. = ..()
+	RT = src
+
+
+/obj/machinery/capture_the_flag/blue/beewar/spawn_team_member(client/new_team_member)
+	var/mob/living/carbon/human/M = new/mob/living/carbon/human(get_turf(src))
+	new_team_member.prefs.copy_to(M)
+	if (isplasmaman(M))
+		M.set_species(/datum/species/human)
+	M.key = new_team_member.key
+	M.faction += team
+	if (new_team_member.key == commander)
+		M.equipOutfit(commander_gear)
+	else
+		M.equipOutfit(ctf_gear)
+	spawned_mobs += M
+
+
+/obj/machinery/capture_the_flag/red/beewar/spawn_team_member(client/new_team_member)
+	var/mob/living/carbon/human/M = new/mob/living/carbon/human(get_turf(src))
+	new_team_member.prefs.copy_to(M)
+	if (isplasmaman(M))
+		M.set_species(/datum/species/human)
+	M.key = new_team_member.key
+	M.faction += team
+	if (new_team_member.key == commander)
+		M.equipOutfit(commander_gear)
+	else
+		M.equipOutfit(ctf_gear)
+	spawned_mobs += M
+
+/obj/structure/trap/ctf/beewar/trap_effect(mob/living/L)
+	if(!(src.team in L.faction))
+		to_chat(L, "<span class='danger'><B>Stay out of the enemy spawn!</B></span>")
+		L.death()
+
+/obj/structure/trap/ctf/beewar/red
+	team = RED_TEAM
+	icon_state = "trap-fire"
+
+/obj/structure/trap/ctf/beewar/blue
+	team = BLUE_TEAM
+	icon_state = "trap-frost"
 
 /obj/machinery/capture_the_flag/blue/beewar/process(delta_time)
 	for(var/mob/living/M as() in spawned_mobs)
@@ -65,8 +123,8 @@
 		else
 			// The changes that you've been hit with no shield but not
 			// instantly critted are low, but have some healing.
-			M.adjustBruteLoss(-2.5 * delta_time)
-			M.adjustFireLoss(-2.5 * delta_time)
+			M.adjustBruteLoss(-1 * delta_time)
+			M.adjustFireLoss(-1 * delta_time)
 
 /obj/machinery/capture_the_flag/blue/beewar/ctf_dust_old(mob/living/body)
 	if(isliving(body) && (team in body.faction))
@@ -74,6 +132,12 @@
 			recently_dead_ckeys += body.ckey
 			addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
 			body.ghostize(FALSE,FALSE)
+			if (body.key == BT.commander)
+				var/obj/item/clothing/suit/S = body.get_item_by_slot(ITEM_SLOT_OCLOTHING)
+				//BACON check here
+				var/datum/component/tracking_beacon/TB = S.GetComponent(/datum/component/tracking_beacon)
+				TB.toggle_visibility(FALSE)
+				TB.always_update = TRUE
 			spawned_mobs -= body
 
 /obj/machinery/capture_the_flag/red/beewar/ctf_dust_old(mob/living/body)
@@ -82,6 +146,12 @@
 			recently_dead_ckeys += body.ckey
 			addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
 			body.ghostize(FALSE,FALSE)
+			if (body.key == RT.commander)
+				var/obj/item/clothing/suit/S = body.get_item_by_slot(ITEM_SLOT_OCLOTHING)
+				//BACON check here
+				var/datum/component/tracking_beacon/TB = S.GetComponent(/datum/component/tracking_beacon)
+				TB.toggle_visibility(FALSE)
+				TB.always_update = TRUE
 			spawned_mobs -= body
 
 /turf/closed/indestructible/woodwall
@@ -94,6 +164,8 @@
 	name = "\improper kentucky  rifle"
 	desc = "I own a musket for home defense, since that's what the founding fathers intended. Four ruffians break into my house. What the devil? As I grab my powdered wig and Kentucky rifle. Blow a golf ball sized hole through the first man, he's dead on the spot."
 	mag_type = /obj/item/ammo_box/magazine/internal/boltaction/musket
+	fire_sound = 'code/game/beewars/musketshot.mp3'
+
 
 /obj/item/ammo_box/magazine/internal/boltaction/musket
 	max_ammo = 1
@@ -108,6 +180,7 @@
 	STR.allow_quick_gather = TRUE
 	STR.click_gather = TRUE
 	STR.max_combined_stack_amount = 50
+	STR.max_items = 50
 	STR.can_hold = typecacheof(list(/obj/item/ammo_casing/a762))
 
 /obj/item/storage/belt/bandolier/soldier/PopulateContents()
@@ -126,6 +199,60 @@
 /obj/machinery/control_point/New(loc, ...)
 	. = ..()
 	GLOB.poi_list += src
+
+/obj/item/clock
+	name = "Pocket watch"
+	desc = "Special kind of pocket watch, instead of the time it shows how close you or youre enemy are to winning."
+	icon = 'icons/obj/clockwork_objects.dmi'
+	icon_state = "dread_ipad"
+	worn_icon_state = "dread_ipad"
+
+
+/obj/item/clock/Initialize(mapload)
+	. = ..()
+
+
+/obj/item/clock/examine(mob/user)
+	. = ..()
+	. += "Red team score: [RT.control_points]/[RT.control_points_to_win]"
+	. += "Blue team score: [BT.control_points]/[BT.control_points_to_win]"
+
+/obj/item/promotionkit
+	name = "Commander kit"
+	desc = "Become the commander of youre team with this handy kit, use it in youre hand and boom!"
+	icon = 'code/game/beewars/beewars.dmi'
+	icon_state = "cannonball"
+
+/obj/item/promotionkit/attack_self(mob/user)
+	. = ..()
+	if(!istype(user,/mob/living/carbon/human))
+		return FALSE
+
+	var/mob/living/carbon/human/new_commander = user
+
+	if (BLUE_TEAM in new_commander.faction)
+		if (!BT.commander)
+			BT.commander = new_commander.client.key
+			for (var/obj/item/I in new_commander.get_equipped_items(TRUE))
+				qdel(I)
+			new_commander.equipOutfit(BT.commander_gear)
+			to_chat(new_commander,"<span class='warning'>You have been promoted!</span>")
+			log_game("[key_name(new_commander.mind)] has made themselves commander of the blue team")
+			qdel(src)
+			return TRUE
+
+	if (RED_TEAM in new_commander.faction)
+		if (!RT.commander)
+			RT.commander = new_commander.client.key
+			for (var/obj/item/I in new_commander.get_equipped_items(TRUE))
+				qdel(I)
+			new_commander.equipOutfit(RT.commander_gear)
+			to_chat(new_commander,"<span class='warning'>You have been promoted!</span>")
+			log_game("[key_name(new_commander.mind)] has made themselves commander of the red team")
+			qdel(src)
+			return TRUE
+	return FALSE
+
 
 /obj/item/projectile/magic/aoe/fireball/cannon
 	exp_flash = 0
@@ -161,8 +288,13 @@
 	resistance_flags = FIRE_PROOF
 	armor = list("melee" = 60, "bullet" = 50, "laser" = 30, "energy" = 40, "bomb" = 25, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
 
+/obj/item/clothing/suit/aristo_red/commander
+	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
 
-/datum/outfit/soldier
+/obj/item/clothing/suit/aristo_blue/commander
+	allowed = list(/obj/item/gun/ballistic/rifle/boltaction/musket)
+
+/datum/outfit/war
 	name = "Foot soldier"
 	ears = /obj/item/radio/headset
 	back = /obj/item/storage/backpack/soldier
@@ -172,14 +304,19 @@
 	r_pocket = /obj/item/kitchen/knife/combat/bayonet
 	l_pocket = /obj/item/pinpointer/beewar
 	suit_store = /obj/item/gun/ballistic/rifle/boltaction/musket
-	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1)
+	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1)
 	shoes = /obj/item/clothing/shoes/jackboots/soldier
 	gloves = /obj/item/clothing/gloves/color/white
+	var/datum/component/tracking_beacon/TB //BACON check here, so I dont have to getcomp twice
 
-/datum/outfit/soldier/post_equip(mob/living/carbon/human/H, visualsOnly)
+
+
+/datum/outfit/war/post_equip(mob/living/carbon/human/H, visualsOnly)
 	if(visualsOnly)
 		return
 	var/list/no_drops = list()
+
+	H.mind.assigned_role = "soldier"
 
 	no_drops += H.get_item_by_slot(ITEM_SLOT_OCLOTHING)
 	no_drops += H.get_item_by_slot(ITEM_SLOT_GLOVES)
@@ -190,33 +327,89 @@
 		var/obj/item/I = i
 		ADD_TRAIT(I, TRAIT_NODROP, CAPTURE_THE_FLAG_TRAIT)
 
-/datum/outfit/soldier/redsoldier
+
+
+
+/datum/outfit/war/red/commander
+	name = "Red Commander"
+	back = /obj/item/storage/backpack/bannerpack/red
+	suit = /obj/item/clothing/suit/aristo_red/commander
+	head = /obj/item/clothing/head/beret/black
+
+/datum/outfit/war/red/commander/post_equip(mob/living/carbon/human/H, visualsOnly)
+	. = ..()
+	var/obj/item/radio/R = H.ears
+	R.command = TRUE
+	R.use_command = TRUE
+	H.mind.assigned_role = "commander"
+	H.real_name = "Commander [H.real_name]"
+	//BACON check here
+	TB.toggle_visibility(TRUE)
+	TB.always_update = TRUE
+
+/datum/outfit/war/blue/commander
+	name = "Blue Commander"
+	back = /obj/item/storage/backpack/bannerpack/blue
+	suit = /obj/item/clothing/suit/aristo_blue/commander
+	head = /obj/item/clothing/head/beret/black
+
+/datum/outfit/war/blue/commander/post_equip(mob/living/carbon/human/H, visualsOnly)
+	. = ..()
+	var/obj/item/radio/R = H.ears
+	R.command = TRUE
+	R.use_command = TRUE
+	H.mind.assigned_role = "commander"
+	H.real_name = "Commander [H.real_name]"
+	//BACON check here
+	TB.toggle_visibility(TRUE)
+	TB.always_update = TRUE
+
+
+/datum/outfit/war/red
 	name = "Red foot soldier"
 	uniform = /obj/item/clothing/under/color/red
 	back = /obj/item/storage/backpack/soldier/red
 	suit =  /obj/item/clothing/suit/jacket/letterman_red/soldier
 
-/datum/outfit/soldier/redsoldier/post_equip(mob/living/carbon/human/H, visualsOnly)
+/datum/outfit/war/red/post_equip(mob/living/carbon/human/H, visualsOnly)
 	..()
 	var/obj/item/radio/R = H.ears
 	R.set_frequency(FREQ_CTF_RED)
 	R.freqlock = TRUE
 	R.independent = TRUE
+	var/obj/item/clothing/suit/target = H.get_item_by_slot(ITEM_SLOT_OCLOTHING)
+	//BACON check here
+	var/datum/component/team_monitor/TM = target.AddComponent(/datum/component/team_monitor, "red", null)
+	TB = target.AddComponent(/datum/component/tracking_beacon, "red", null, null, TRUE, "#eb270d", TRUE, TRUE)
+	TB.toggle_visibility(FALSE)
+	TB.attached_monitor = TM
+	TM.toggle_hud(TRUE, H)
+	TM.set_frequency(1)
 
 
-/datum/outfit/soldier/bluesoldier
+
+/datum/outfit/war/blue
 	name = "Blue foot soldier"
 	uniform = /obj/item/clothing/under/color/blue
 	back = /obj/item/storage/backpack/soldier/blue
 	suit = /obj/item/clothing/suit/jacket/letterman_nanotrasen/soldier
 
 
-/datum/outfit/soldier/bluesoldier/post_equip(mob/living/carbon/human/H, visualsOnly)
+/datum/outfit/war/blue/post_equip(mob/living/carbon/human/H, visualsOnly)
 	..()
 	var/obj/item/radio/R = H.ears
 	R.set_frequency(FREQ_CTF_BLUE)
 	R.freqlock = TRUE
 	R.independent = TRUE
+	var/obj/item/clothing/suit/target = H.get_item_by_slot(ITEM_SLOT_OCLOTHING)
+	//BACON check here
+	var/datum/component/team_monitor/TM = target.AddComponent(/datum/component/team_monitor, "blue", null)
+	TB = target.AddComponent(/datum/component/tracking_beacon, "blue", null, null, TRUE, "#1519e9", TRUE, TRUE)
+	TB.toggle_visibility(FALSE)
+	TB.attached_monitor = TM
+	TM.toggle_hud(TRUE, H)
+	TM.set_frequency(1)
+
 
 
 /obj/item/clothing/suit/jacket/letterman_nanotrasen/soldier

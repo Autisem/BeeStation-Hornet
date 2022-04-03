@@ -39,4 +39,6 @@
 	turf_type = /turf/open/floor/plating/asteroid/wargrass
 	flora_types = list(/obj/structure/flora/grass/jungle,/obj/structure/flora/grass/jungle/b, /obj/structure/flora/tree/pine)
 	flora_density = 40
+	//fauna_density = 1
+	//fauna_types = list(/mob/living/simple_animal/chick,/mob/living/simple_animal/chick,/mob/living/simple_animal/hostile/bear)
 
