@@ -168,7 +168,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	name = "\improper kentucky  rifle"
 	desc = "I own a musket for home defense, since that's what the founding fathers intended. Four ruffians break into my house. What the devil? As I grab my powdered wig and Kentucky rifle. Blow a golf ball sized hole through the first man, he's dead on the spot."
 	mag_type = /obj/item/ammo_box/magazine/internal/boltaction/musket
-	fire_sound = 'code/game/beewars/musketshot.mp3'
+	fire_sound = 'code/game/beewars/musketshot.ogg'
 
 
 /obj/item/ammo_box/magazine/internal/boltaction/musket
@@ -489,3 +489,4 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	desc = "A spacious backpack with lots of pockets, for all those supply's."
 	icon_state = "ert_security"
 	resistance_flags = FIRE_PROOF
+	item_flags = DROPDEL
