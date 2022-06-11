@@ -131,6 +131,8 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 		if (body.ckey)
 			recently_dead_ckeys += body.ckey
 			addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
+			body.layer = 0
+			body.set_species(/datum/species/skeleton,TRUE,TRUE)
 			body.ghostize(FALSE,FALSE)
 			spawned_mobs -= body
 		var/obj/item/clothing/suit/S = body.get_item_by_slot(ITEM_SLOT_OCLOTHING)
@@ -147,6 +149,8 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 		if (body.ckey)
 			recently_dead_ckeys += body.ckey
 			addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
+			body.layer = 0
+			body.set_species(/datum/species/skeleton,TRUE,TRUE)
 			body.ghostize(FALSE,FALSE)
 			spawned_mobs -= body
 		var/obj/item/clothing/suit/S = body.get_item_by_slot(ITEM_SLOT_OCLOTHING)
@@ -271,7 +275,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	icon_state = "cannon"
 	rate_of_fire = 1
 	number_of_shots = 1
-	cooldown_duration = 60
+	cooldown_duration = 30 SECONDS
 	view_range = 9
 
 /obj/machinery/manned_turret/cannon/Initialize(mapload)
