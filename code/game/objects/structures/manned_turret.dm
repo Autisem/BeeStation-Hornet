@@ -156,7 +156,7 @@
 	P.starting = targets_from
 	P.firer = user
 	P.original = target
-	playsound(src, 'code/game/beewars/cannonsound.ogg', 75, 1)
+	playsound(src, "code/game/beewars/cannonsound2.mp3", 75, 1)
 	P.xo = target.x - targets_from.x
 	P.yo = target.y - targets_from.y
 	P.Angle = calculated_projectile_vars[1] + rand(-9, 9)

@@ -172,7 +172,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	name = "\improper kentucky  rifle"
 	desc = "I own a musket for home defense, since that's what the founding fathers intended. Four ruffians break into my house. What the devil? As I grab my powdered wig and Kentucky rifle. Blow a golf ball sized hole through the first man, he's dead on the spot."
 	mag_type = /obj/item/ammo_box/magazine/internal/boltaction/musket
-	fire_sound = 'code/game/beewars/musketshot.ogg'
+	//fire_sound = "sound/weapons/musketshot.ogg"//code/game/beewars/musketshot.ogg
 
 
 /obj/item/ammo_box/magazine/internal/boltaction/musket
@@ -296,6 +296,11 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	resistance_flags = FIRE_PROOF
 	armor = list("melee" = 60, "bullet" = 50, "laser" = 30, "energy" = 40, "bomb" = 25, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
 
+ /obj/item/clothing/gloves/color/white/soldier
+ 	name = "Militant Gloves"
+	resistance_flags = FIRE_PROOF
+	armor = list("melee" = 60, "bullet" = 50, "laser" = 30, "energy" = 40, "bomb" = 25, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50, "stamina" = 30)
+
 
 /datum/outfit/war
 	name = "Foot soldier"
@@ -309,9 +314,7 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	suit_store = /obj/item/gun/ballistic/rifle/boltaction/musket
 	backpack_contents = list(/obj/item/shovel/spade = 1,/obj/item/hatchet=1,/obj/item/storage/firstaid/regular=1,/obj/item/clock=1)
 	shoes = /obj/item/clothing/shoes/jackboots/soldier
-	gloves = /obj/item/clothing/gloves/color/white
-
-
+	gloves = /obj/item/clothing/gloves/color/white/soldier
 
 /datum/outfit/war/post_equip(mob/living/carbon/human/H, visualsOnly)
 	if(visualsOnly)
@@ -343,15 +346,14 @@ var/global/obj/machinery/capture_the_flag/blue/beewar/BT
 	new /obj/item/melee/sabre/beewars(src)
 	update_icon()
 
-
-/obj/item/storage/belt/beewars/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type)
-	. = ..()
+/obj/item/melee/sabre/beewars/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
 	if(isprojectile(hitby) && !istype(hitby,/obj/item/projectile/magic/aoe/fireball/cannon))
 		var/obj/item/projectile/P = hitby
+		owner.emote("Gracefully returns the bullets back to sender")
 		P.firer = src
 		P.setAngle(get_dir(owner, hitby))
-		owner.emote("Gracefully returns the bullets back to sender")
 		return 1
+	return ..()
 
 /datum/outfit/war/red/commander
 	name = "Red Commander"
